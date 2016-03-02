@@ -42,6 +42,7 @@ import static java.util.Arrays.asList;
 public class TemplateFilter extends AbstractResourceFilter<TemplateFilter> {
     private DataCenterFilter dataCenter = new DataCenterFilter(alwaysTrue());
     private Predicate<TemplateMetadata> predicate = alwaysTrue();
+    private String revision = "";
 
     public TemplateFilter() {
     }
@@ -145,6 +146,13 @@ public class TemplateFilter extends AbstractResourceFilter<TemplateFilter> {
         return this;
     }
 
+    public TemplateFilter revision(String revision){
+
+        this.revision = revision;
+        return this;
+    }
+
+
     /**
      * Method allow to find templates that contains {@code substring} in description
      * Filtering is case insensitive.
@@ -235,5 +243,9 @@ public class TemplateFilter extends AbstractResourceFilter<TemplateFilter> {
 
     public Predicate<TemplateMetadata> getPredicate() {
         return predicate;
+    }
+
+    public String getRevision() {
+        return revision;
     }
 }

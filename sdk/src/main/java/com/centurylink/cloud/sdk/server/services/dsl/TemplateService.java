@@ -20,6 +20,7 @@ import com.centurylink.cloud.sdk.base.services.client.domain.datacenters.DataCen
 import com.centurylink.cloud.sdk.base.services.client.domain.datacenters.deployment.capabilities.TemplateMetadata;
 import com.centurylink.cloud.sdk.base.services.dsl.DataCenterService;
 import com.centurylink.cloud.sdk.core.services.QueryService;
+import com.centurylink.cloud.sdk.core.util.Strings;
 import com.centurylink.cloud.sdk.server.services.dsl.domain.template.filters.TemplateFilter;
 import com.centurylink.cloud.sdk.server.services.dsl.domain.template.refs.Template;
 
@@ -54,6 +55,9 @@ public class TemplateService implements QueryService<Template, TemplateFilter, T
                     .map(dataCentersClient::getDeploymentCapabilities)
                     .flatMap(c -> c.getTemplates().stream())
                     .filter(criteria.getPredicate())
+                    .map(templateMetadata -> {
+                        templateMetadata.setName(templateMetadata.getName() + (Strings.isNullOrEmpty(filter.getRevision()) ? "" : "-" + filter.getRevision()));
+                    return templateMetadata; })
             );
     }
 
