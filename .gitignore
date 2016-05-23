@@ -49,3 +49,5 @@ target/
 
 docs/javadoc/*
 
+# Mac files
+.DS_Store

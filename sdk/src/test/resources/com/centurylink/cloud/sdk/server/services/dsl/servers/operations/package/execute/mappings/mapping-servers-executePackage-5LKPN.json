@@ -1,0 +1,24 @@
+{
+  "request" : {
+    "url" : "/v2/operations/ALTD/servers/executePackage",
+    "method" : "POST",
+    "bodyPatterns" : [ {
+      "equalToJson" : "{ \"servers\":[ \"CA1ALTDPWROPS01\" ], \"package\":{ \"packageId\":\"a103ec29-b590-4374-8b89-378965837abd\", \"parameters\":{\"key\":\"value\"} } }",
+      "jsonCompareMode" : "LENIENT"
+    } ]
+  },
+  "response" : {
+    "status" : 200,
+    "bodyFileName" : "body-servers-executePackage-5LKPN.json",
+    "headers" : {
+      "Cache-Control" : "no-cache",
+      "Pragma" : "no-cache",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Content-Encoding" : "gzip",
+      "Expires" : "-1",
+      "Vary" : "Accept-Encoding",
+      "Date" : "Thu, 18 Jun 2015 11:36:37 GMT",
+      "Content-Length" : "226"
+    }
+  }
+}
