@@ -95,6 +95,17 @@ public class SearchTemplatesTest extends AbstractServersSdkTest {
     }
 
     @Test
+    public void testFindTemplateByNameRefWithRevision() {
+        TemplateMetadata metadata = templateService.findByRef(Template.refByName()
+                .dataCenter(US_EAST_STERLING)
+                .name("CENTOS-6-64-TEMPLATE")
+                .revision("2.0")
+        );
+
+        assertEquals(metadata.getName(), "CENTOS-6-64-TEMPLATE-2.0");
+    }
+
+    @Test
     public void testFindTemplateByDescriptionRef() {
         TemplateMetadata metadata = templateService.findByRef(Template.refByDescription()
             .dataCenter(US_EAST_STERLING)

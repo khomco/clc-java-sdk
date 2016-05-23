@@ -35,9 +35,6 @@ public class TemplateByNameRef extends Template {
         return name;
     }
 
-    public String getRevision() {
-        return revision;
-    }
     public TemplateByNameRef revision(String revision) {
         return new TemplateByNameRef(getDataCenter(), name, revision);
     }

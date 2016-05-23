@@ -56,7 +56,7 @@ public class TemplateService implements QueryService<Template, TemplateFilter, T
                     .flatMap(c -> c.getTemplates().stream())
                     .filter(criteria.getPredicate())
                     .map(templateMetadata -> {
-                        templateMetadata.setName(templateMetadata.getName() + (Strings.isNullOrEmpty(filter.getRevision()) ? "" : "-" + filter.getRevision()));
+                        templateMetadata.setName(templateMetadata.getName() + (Strings.isNullOrEmpty(filter.revision()) ? "" : "-" + filter.revision()));
                     return templateMetadata; })
             );
     }
