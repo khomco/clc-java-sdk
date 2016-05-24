@@ -743,8 +743,8 @@ public class ServerService implements QueryService<Server, ServerFilter, ServerM
     public OperationFuture<List<Server>> executePackage(ScriptPackageConfig scriptPackageConfig, Server... serverRefs) {
         ExecutePackageRequest executePackageRequest = new ExecutePackageRequest();
         ExecutePackageRequest.Package pkg = executePackageRequest.new Package()
-                .packageId(scriptPackageConfig.getPkg().getPackageId())
-                .parameters(scriptPackageConfig.getPkg().getParameters());
+                .packageId(scriptPackageConfig.getPackageId())
+                .parameters(scriptPackageConfig.getParameters());
 
         executePackageRequest
                 .servers(ids(serverRefs))

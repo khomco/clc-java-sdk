@@ -15,12 +15,10 @@ public class ExecutePackageTest extends AbstractServerOperationTest implements W
 
     @Test
     @WireMockFileSource("/package/execute")
-    public void test() {
-        ScriptPackageConfig scriptPackageConfig = new ScriptPackageConfig();
-        ScriptPackageConfig.Package pkg = scriptPackageConfig.new Package();
-        pkg.setPackageId("a103ec29-b590-4374-8b89-378965837abd");
-        pkg.parameter("key", "value");
-        scriptPackageConfig.setPkg(pkg);
+    public void testExecutePackage() {
+        ScriptPackageConfig scriptPackageConfig = new ScriptPackageConfig()
+                .packageId("a103ec29-b590-4374-8b89-378965837abd")
+                .parameter("key", "value");
 
         serverService.executePackage(scriptPackageConfig, server)
                 .waitUntilComplete();
