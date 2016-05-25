@@ -33,13 +33,7 @@ import com.centurylink.cloud.sdk.server.services.client.ServerClient;
 import com.centurylink.cloud.sdk.server.services.client.domain.ip.PublicIpMetadata;
 import com.centurylink.cloud.sdk.server.services.client.domain.network.AddNetworkRequest;
 import com.centurylink.cloud.sdk.server.services.client.domain.network.NetworkMetadata;
-import com.centurylink.cloud.sdk.server.services.client.domain.server.BaseServerListResponse;
-import com.centurylink.cloud.sdk.server.services.client.domain.server.BaseServerResponse;
-import com.centurylink.cloud.sdk.server.services.client.domain.server.CreateSnapshotRequest;
-import com.centurylink.cloud.sdk.server.services.client.domain.server.IpAddress;
-import com.centurylink.cloud.sdk.server.services.client.domain.server.ModifyServerRequest;
-import com.centurylink.cloud.sdk.server.services.client.domain.server.RestoreServerRequest;
-import com.centurylink.cloud.sdk.server.services.client.domain.server.ServerCredentials;
+import com.centurylink.cloud.sdk.server.services.client.domain.server.*;
 import com.centurylink.cloud.sdk.server.services.client.domain.server.metadata.ServerMetadata;
 import com.centurylink.cloud.sdk.server.services.dsl.domain.group.refs.Group;
 import com.centurylink.cloud.sdk.server.services.dsl.domain.ip.CreatePublicIpConfig;
@@ -52,12 +46,7 @@ import com.centurylink.cloud.sdk.server.services.dsl.domain.network.refs.Network
 import com.centurylink.cloud.sdk.server.services.dsl.domain.remote.SshClient;
 import com.centurylink.cloud.sdk.server.services.dsl.domain.remote.SshException;
 import com.centurylink.cloud.sdk.server.services.dsl.domain.remote.SshjClient;
-import com.centurylink.cloud.sdk.server.services.dsl.domain.server.CloneServerConfig;
-import com.centurylink.cloud.sdk.server.services.dsl.domain.server.CreateServerConfig;
-import com.centurylink.cloud.sdk.server.services.dsl.domain.server.ImportServerConfig;
-import com.centurylink.cloud.sdk.server.services.dsl.domain.server.ModifyServerConfig;
-import com.centurylink.cloud.sdk.server.services.dsl.domain.server.ServerConverter;
-import com.centurylink.cloud.sdk.server.services.dsl.domain.server.SshConnectionConfig;
+import com.centurylink.cloud.sdk.server.services.dsl.domain.server.*;
 import com.centurylink.cloud.sdk.server.services.dsl.domain.server.filters.ServerFilter;
 import com.centurylink.cloud.sdk.server.services.dsl.domain.server.future.CreateServerBlueprintJobFuture;
 import com.centurylink.cloud.sdk.server.services.dsl.domain.server.future.CreateServerJobFuture;
@@ -1415,5 +1404,36 @@ public class ServerService implements QueryService<Server, ServerFilter, ServerM
         return new AddNetworkRequest()
             .ipAddress(config.getIpAddress())
             .networkId(networkIdByRef(config.getNetwork(), locationId));
+    }
+
+    /**
+     * Convert Server to Template
+     *
+     * @param server server reference
+     * @param config template config; to lookup password leave password field empty
+     * @return OperationFuture wrapper for Server
+     */
+    public OperationFuture<Server> convertToTemplate(Server server, ConvertToTemplateConfig config) {
+        BaseServerResponse response = client.convertToTemplate(
+                idByRef(server),
+                buildConvertToTemplateRequest(server, config)
+        );
+
+        return new OperationFuture<>(
+                server,
+                response.findStatusId(),
+                queueClient
+        );
+    }
+
+    private ConvertToTemplateRequest buildConvertToTemplateRequest(Server server, ConvertToTemplateConfig config) {
+        String password = config.getPassword();
+        if(Strings.isNullOrEmpty(password)) {
+            password = findCredentials(server).getPassword();
+        }
+        return new ConvertToTemplateRequest()
+                .description(config.getDescription())
+                .password(password)
+                .visibility(config.getVisibility().getCode());
     }
 }

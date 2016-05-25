@@ -367,4 +367,13 @@ public class ServerClient extends AuthenticatedSdkHttpClient {
                 .delete()
                 .readEntity(NetworkLink.class);
     }
+
+    public BaseServerResponse convertToTemplate(String serverId, ConvertToTemplateRequest request) {
+        return
+                client(SERVER_URL_WITH_ID + "/convertToTemplate")
+                        .resolveTemplate(SERVER_ID, serverId)
+                        .request()
+                        .post(entity(request, APPLICATION_JSON_TYPE))
+                        .readEntity(BaseServerResponse.class);
+    }
 }

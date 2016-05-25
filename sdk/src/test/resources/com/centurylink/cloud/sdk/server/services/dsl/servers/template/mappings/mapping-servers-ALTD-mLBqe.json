@@ -1,0 +1,23 @@
+{
+  "request" : {
+    "url" : "/v2/servers/ALTD/de1altdcln04/convertToTemplate",
+    "method" : "POST",
+    "bodyPatterns" : [ {
+      "equalToJson" : "{\"description\":\"de1altdcln04-converttotemplate\",\"password\":\"Password123#\",\"visibility\":\"private\"}",
+      "jsonCompareMode" : "LENIENT"
+    } ]
+  },
+  "response" : {
+    "status" : 200,
+    "bodyFileName" : "body-servers-ALTD-mLBqe.json",
+    "headers" : {
+      "Cache-Control" : "no-cache",
+      "Pragma" : "no-cache",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Expires" : "-1",
+      "Vary" : "Accept-Encoding",
+      "Date" : "Tue, 25 Aug 2015 15:24:35 GMT",
+      "Content-Length" : "1057"
+    }
+  }
+}
