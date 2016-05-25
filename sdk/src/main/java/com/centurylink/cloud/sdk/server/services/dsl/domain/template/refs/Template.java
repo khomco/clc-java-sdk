@@ -35,7 +35,7 @@ public abstract class Template implements Reference<TemplateFilter> {
      * @return {@link TemplateByNameRef}
      */
     public static TemplateByNameRef refByName() {
-        return new TemplateByNameRef(null, null);
+        return new TemplateByNameRef(null, null, "");
     }
 
     /**

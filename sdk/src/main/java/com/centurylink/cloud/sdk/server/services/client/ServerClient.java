@@ -210,6 +210,14 @@ public class ServerClient extends AuthenticatedSdkHttpClient {
                 .readEntity(Link.class);
     }
 
+    public BaseServerListResponse executePackage(ExecutePackageRequest request) {
+        return
+            client("/operations/{accountAlias}/servers/executePackage")
+                .request()
+                .post(entity(request, APPLICATION_JSON_TYPE))
+                .readEntity(BaseServerListResponse.class);
+    }
+
     public Link revertToSnapshot(String serverId, String snapshotId) {
         return client(SERVER_URL_WITH_ID + "/snapshots/{snapshotId}/restore")
             .resolveTemplate(SERVER_ID, serverId)

@@ -23,22 +23,28 @@ import com.centurylink.cloud.sdk.server.services.dsl.domain.template.filters.Tem
  */
 public class TemplateByNameRef extends Template {
     private final String name;
+    private final String revision;
 
-    TemplateByNameRef(DataCenter dataCenter, String name) {
+    TemplateByNameRef(DataCenter dataCenter, String name, String revision) {
         super(dataCenter);
         this.name = name;
+        this.revision = revision;
     }
 
     public String getName() {
         return name;
     }
 
+    public TemplateByNameRef revision(String revision) {
+        return new TemplateByNameRef(getDataCenter(), name, revision);
+    }
+
     public TemplateByNameRef name(String name) {
-        return new TemplateByNameRef(getDataCenter(), name);
+        return new TemplateByNameRef(getDataCenter(), name, revision);
     }
 
     public TemplateByNameRef dataCenter(DataCenter dataCenter) {
-        return new TemplateByNameRef(dataCenter, name);
+        return new TemplateByNameRef(dataCenter, name, revision);
     }
 
     @Override
@@ -46,6 +52,7 @@ public class TemplateByNameRef extends Template {
         return
             new TemplateFilter()
                 .dataCenters(getDataCenter())
-                .names(name);
+                .names(name)
+                .revision(revision);
     }
 }
