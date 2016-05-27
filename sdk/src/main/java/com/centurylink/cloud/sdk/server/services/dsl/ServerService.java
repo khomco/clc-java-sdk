@@ -36,6 +36,7 @@ import com.centurylink.cloud.sdk.server.services.client.domain.network.NetworkMe
 import com.centurylink.cloud.sdk.server.services.client.domain.server.*;
 import com.centurylink.cloud.sdk.server.services.client.domain.server.metadata.ServerMetadata;
 import com.centurylink.cloud.sdk.server.services.dsl.domain.group.refs.Group;
+import com.centurylink.cloud.sdk.server.services.dsl.domain.group.refs.GroupByIdRef;
 import com.centurylink.cloud.sdk.server.services.dsl.domain.ip.CreatePublicIpConfig;
 import com.centurylink.cloud.sdk.server.services.dsl.domain.ip.ModifyPublicIpConfig;
 import com.centurylink.cloud.sdk.server.services.dsl.domain.ip.PublicIpConverter;
@@ -741,7 +742,7 @@ public class ServerService implements QueryService<Server, ServerFilter, ServerM
      */
     public OperationFuture<Link> restore(Server server, Group group) {
         return baseServerResponse(
-            restore(server, groupService.findByRef(group).getId())
+                restore(server, idByRef(group))
         );
     }
 
@@ -1435,5 +1436,41 @@ public class ServerService implements QueryService<Server, ServerFilter, ServerM
                 .description(config.getDescription())
                 .password(password)
                 .visibility(config.getVisibility().getCode());
+    }
+
+    /**
+     * Convert Template to Server
+     *
+     * @param server server reference
+     * @param config server config
+     * @return OperationFuture wrapper for Server
+     */
+    public OperationFuture<Server> converTemplateToServer(Server server, ConvertTemplateToServerConfig config) {
+        BaseServerResponse response = client.convertTemplateToServer(
+                idByRef(server),
+                buildConvertToServerRequest(server, config)
+        );
+
+        return new OperationFuture<>(
+                server,
+                response.findStatusId(),
+                queueClient
+        );
+    }
+
+    private ConvertTemplateToServerRequest buildConvertToServerRequest(Server server, ConvertTemplateToServerConfig config) {
+        ServerMetadata serverMetadata = findByRef(server);
+        return new ConvertTemplateToServerRequest()
+                .groupId(idByRef(config.getGroup()))
+                .networkId(networkIdByRef(config.getNetwork(), serverMetadata.getLocationId()))
+                .password(config.getPassword());
+    }
+
+    String idByRef(Group ref) {
+        if (ref.is(GroupByIdRef.class)) {
+            return ref.as(GroupByIdRef.class).getId();
+        }
+
+        return groupService.findByRef(ref).getId();
     }
 }

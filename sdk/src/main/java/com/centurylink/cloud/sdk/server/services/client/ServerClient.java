@@ -376,4 +376,13 @@ public class ServerClient extends AuthenticatedSdkHttpClient {
                         .post(entity(request, APPLICATION_JSON_TYPE))
                         .readEntity(BaseServerResponse.class);
     }
+
+    public BaseServerResponse convertTemplateToServer(String serverId, ConvertTemplateToServerRequest request) {
+        return
+                client(SERVER_URL_WITH_ID + "/convertToServer")
+                        .resolveTemplate(SERVER_ID, serverId)
+                        .request()
+                        .post(entity(request, APPLICATION_JSON_TYPE))
+                        .readEntity(BaseServerResponse.class);
+    }
 }
